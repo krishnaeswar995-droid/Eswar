@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wireframes — Hospital Appointment Booking</title>
+<style>
+  /* Low-fidelity wireframe kit: greys only, one blue for annotation callouts. */
+  :root { --k:#2b2b2b; --g1:#f2f2f2; --g2:#e0e0e0; --g3:#bdbdbd; --g4:#8a8a8a; --note:#1f5fbf; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #fafafa; color: var(--k); font: 14px/1.45 Helvetica, Arial, sans-serif; }
+  header.doc { max-width: 1320px; margin: 0 auto; padding: 32px 24px 8px; }
+  header.doc h1 { margin: 0 0 4px; font-size: 26px; }
+  header.doc p { margin: 0; color: #555; max-width: 80ch; }
+  nav.toc { max-width: 1320px; margin: 12px auto 0; padding: 0 24px; display: flex; flex-wrap: wrap; gap: 6px; }
+  nav.toc a { border: 1px solid var(--g3); padding: 3px 10px; border-radius: 14px; color: var(--k); text-decoration: none; font-size: 13px; background: #fff; }
+  section.screen { max-width: 1320px; margin: 28px auto; padding: 0 24px; display: grid; grid-template-columns: 1fr 280px; gap: 20px; }
+  .label { grid-column: 1 / -1; display: flex; align-items: baseline; gap: 10px; }
+  .label h2 { margin: 0; font-size: 18px; }
+  .label span { color: #666; }
+  .frame { background: #fff; border: 2px solid var(--k); border-radius: 6px; overflow: hidden; min-height: 560px; }
+  .notes { font-size: 13px; }
+  .notes h3 { margin: 0 0 8px; font-size: 13px; color: var(--note); }
+  .notes ol { margin: 0; padding-left: 0; list-style: none; counter-reset: n; }
+  .notes li { counter-increment: n; position: relative; padding: 0 0 10px 30px; }
+  .notes li::before { content: counter(n); position: absolute; left: 0; top: 0; width: 20px; height: 20px; border-radius: 50%; background: var(--note); color: #fff; font-size: 11px; display: grid; place-items: center; font-weight: 700; }
+  .n { display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: var(--note); color: #fff; font-size: 11px; font-weight: 700; vertical-align: middle; margin: 0 4px; flex-shrink: 0; }
+
+  /* Wireframe primitives */
+  .bar { height: 52px; background: var(--g2); border-bottom: 2px solid var(--k); display: flex; align-items: center; padding: 0 18px; gap: 14px; }
+  .logo { width: 150px; height: 22px; background: var(--g4); border-radius: 3px; }
+  .sp { flex: 1; }
+  .lnk { width: 80px; height: 10px; background: var(--g4); border-radius: 2px; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; height: 34px; padding: 0 14px; border: 2px solid var(--k); border-radius: 4px; font-weight: 700; font-size: 13px; background: #fff; }
+  .btn.p { background: var(--k); color: #fff; }
+  .btn.s { height: 28px; font-size: 12px; padding: 0 10px; }
+  .btn.dis { border-color: var(--g3); color: var(--g3); background: #fff; }
+  .body { padding: 22px 26px; }
+  .h1 { font-size: 22px; font-weight: 700; margin: 0 0 6px; }
+  .h2 { font-size: 15px; font-weight: 700; margin: 0 0 8px; }
+  .txt { height: 9px; background: var(--g2); border-radius: 2px; margin: 6px 0; }
+  .w30{width:30%}.w40{width:40%}.w50{width:50%}.w60{width:60%}.w70{width:70%}.w80{width:80%}.w90{width:90%}
+  .box { border: 2px solid var(--g3); border-radius: 6px; padding: 14px; background: #fff; }
+  .dash { border-style: dashed; }
+  .fld { margin-bottom: 12px; }
+  .fld .lb { font-size: 12px; font-weight: 700; margin-bottom: 4px; }
+  .inp { height: 34px; border: 2px solid var(--g3); border-radius: 4px; background: #fff; display: flex; align-items: center; padding: 0 10px; color: #999; font-size: 12px; }
+  .inp.err { border-color: var(--k); border-width: 3px; }
+  .errt { font-size: 11px; font-weight: 700; margin-top: 3px; }
+  .row { display: flex; gap: 12px; align-items: center; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .av { width: 46px; height: 46px; border-radius: 50%; background: var(--g2); border: 2px solid var(--g3); flex-shrink: 0; }
+  .av.l { width: 68px; height: 68px; }
+  .x { position: relative; background: var(--g1); border: 2px solid var(--g3); }
+  .chip { display: inline-flex; align-items: center; justify-content: center; height: 32px; min-width: 70px; border: 2px solid var(--k); border-radius: 4px; font-size: 12px; font-weight: 700; }
+  .chip.bk { border-color: var(--g3); color: var(--g3); text-decoration: line-through; background: var(--g1); }
+  .chip.sel { background: var(--k); color: #fff; }
+  .chip.off { border-style: dashed; border-color: var(--g3); color: #999; font-weight: 400; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .day { width: 62px; height: 70px; border: 2px solid var(--g3); border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 11px; }
+  .day b { font-size: 18px; }
+  .day.on { border-color: var(--k); background: var(--k); color: #fff; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th { text-align: left; border-bottom: 2px solid var(--k); padding: 6px; }
+  td { border-bottom: 1px solid var(--g2); padding: 8px 6px; }
+  .pill { display: inline-block; border: 1.5px solid var(--k); border-radius: 10px; padding: 0 7px; font-size: 11px; font-weight: 700; }
+  .tabs { display: flex; gap: 18px; border-bottom: 2px solid var(--g3); margin: 10px 0 16px; font-weight: 700; font-size: 13px; }
+  .tabs span { padding: 6px 0; color: #888; }
+  .tabs span.n { color: #fff; padding: 0; }
+  .tabs span.on { color: var(--k); border-bottom: 3px solid var(--k); margin-bottom: -2px; }
+  .stat { border: 2px solid var(--g3); border-radius: 6px; padding: 10px 12px; }
+  .stat b { font-size: 24px; display: block; }
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 14px; }
+  .alert { border-left: 5px solid var(--k); background: var(--g1); padding: 8px 12px; font-size: 12px; margin-bottom: 12px; }
+  .small { font-size: 12px; color: #666; }
+  .mobile { width: 300px; border: 2px solid var(--k); border-radius: 18px; overflow: hidden; background: #fff; }
+  @media (max-width: 900px) { section.screen { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header class="doc">
+  <h1>Wireframes — Hospital Appointment Booking System</h1>
+  <p>Low-fidelity wireframes for the eight required screens. Numbered blue markers link to the notes beside each frame. Requirement IDs refer to the BRD. The clickable prototype in <code>/prototype</code> implements these layouts.</p>
+</header>
+<nav class="toc">
+  <a href="#w1">1 Login &amp; registration</a><a href="#w2">2 Doctor search</a><a href="#w3">3 Doctor profile</a><a href="#w4">4 Booking</a><a href="#w5">5 Confirmation</a><a href="#w6">6 Patient dashboard</a><a href="#w7">7 Doctor dashboard</a><a href="#w8">8 Admin dashboard</a>
+</nav>
+
+<!-- 1 LOGIN & REGISTRATION -->
+<section class="screen" id="w1">
+  <div class="label"><h2>1. Login and registration</h2><span>FR-01 – FR-08, US-01, US-02</span></div>
+  <div class="frame">
+    <div class="bar"><div class="logo"></div><div class="sp"></div><div class="lnk"></div><span class="btn s">Log in</span><span class="btn s p">Register</span></div>
+    <div class="body grid2" style="gap:28px">
+      <div>
+        <p class="h1">Log in <span class="n">1</span></p>
+        <div class="alert">Invalid email or password. <span class="n">2</span></div>
+        <div class="fld"><div class="lb">Email</div><div class="inp">name@example.com</div></div>
+        <div class="fld"><div class="lb">Password</div><div class="inp">••••••••</div></div>
+        <span class="btn p" style="width:100%">Log in</span>
+        <p class="small" style="margin-top:10px">New patient? <u>Create an account</u> · <u>Forgot password?</u> <span class="n">3</span></p>
+        <div class="box dash" style="margin-top:14px"><p class="h2">Demo accounts <span class="n">4</span></p><div class="txt w80"></div><div class="txt w70"></div><div class="txt w60"></div></div>
+      </div>
+      <div class="box">
+        <p class="h1">Create a patient account <span class="n">5</span></p>
+        <div class="fld"><div class="lb">Full name</div><div class="inp"></div></div>
+        <div class="fld"><div class="lb">Email</div><div class="inp err">alice@demo.com</div><div class="errt">An account with this email already exists. <span class="n">6</span></div></div>
+        <div class="grid2"><div class="fld"><div class="lb">Mobile</div><div class="inp"></div></div><div class="fld"><div class="lb">Date of birth</div><div class="inp">dd/mm/yyyy</div></div></div>
+        <div class="grid2"><div class="fld"><div class="lb">Password</div><div class="inp"></div></div><div class="fld"><div class="lb">Confirm password</div><div class="inp"></div></div></div>
+        <span class="btn p" style="width:100%">Create account</span>
+      </div>
+    </div>
+  </div>
+  <div class="notes"><h3>Notes</h3><ol>
+    <li>One login for all roles; the role decides which dashboard opens (FR-03).</li>
+    <li>Generic error — never reveals whether the email exists (FR-04). Lockout after 5 tries (NFR-04).</li>
+    <li>Password reset by email link (FR-07, Should).</li>
+    <li>Prototype only: one-click demo credentials for each role.</li>
+    <li>Only patients self-register. Doctor and admin accounts are created by an admin (FR-08).</li>
+    <li>Inline, field-level validation; duplicate email blocked (FR-02).</li>
+  </ol></div>
+</section>
+
+<!-- 2 DOCTOR LISTING -->
+<section class="screen" id="w2">
+  <div class="label"><h2>2. Doctor listing and search</h2><span>FR-10 – FR-12, US-03</span></div>
+  <div class="frame">
+    <div class="bar"><div class="logo"></div><div class="sp"></div><div class="lnk"></div><div class="lnk"></div><span class="btn s">Log out</span></div>
+    <div class="body">
+      <p class="h1">Find a doctor</p><p class="small">7 doctors available to book</p>
+      <div class="box row" style="margin:12px 0 16px">
+        <div class="fld" style="flex:0 0 220px;margin:0"><div class="lb">Specialization <span class="n">1</span></div><div class="inp">Cardiology ▾</div></div>
+        <div class="fld" style="flex:1;margin:0"><div class="lb">Doctor name <span class="n">2</span></div><div class="inp">Search by name</div></div>
+      </div>
+      <div class="box row" style="margin-bottom:10px"><div class="av"></div><div style="flex:1"><p class="h2" style="margin:0">Dr Priya Raman</p><p class="small" style="margin:2px 0">Cardiology · 14 years</p><div class="txt w50"></div></div><div style="text-align:right"><b style="font-size:18px">£120</b><p class="small" style="margin:2px 0">Next free: Mon 19 Oct, 9:30am <span class="n">3</span></p><span class="btn s p">View &amp; book</span></div></div>
+      <div class="box row" style="margin-bottom:10px"><div class="av"></div><div style="flex:1"><p class="h2" style="margin:0">Dr James Whitfield</p><p class="small" style="margin:2px 0">Cardiology · 9 years</p><div class="txt w40"></div></div><div style="text-align:right"><b style="font-size:18px">£110</b><p class="small" style="margin:2px 0">Next free: Mon 19 Oct, 9:00am</p><span class="btn s p">View &amp; book</span></div></div>
+      <div class="box dash" style="text-align:center;padding:24px"><p class="h2">No doctors found <span class="n">4</span></p><span class="btn s">Clear filters</span></div>
+    </div>
+  </div>
+  <div class="notes"><h3>Notes</h3><ol>
+    <li>Filter by specialization; list updates instantly. Inactive doctors never appear (BR-15).</li>
+    <li>Partial, case-insensitive name search (FR-11).</li>
+    <li>Card shows fee, experience and the next open slot so patients can compare without opening every profile (FR-12).</li>
+    <li>Empty state explains the result and offers a way out.</li>
+  </ol></div>
+</section>
+
+<!-- 3 DOCTOR PROFILE -->
+<section class="screen" id="w3">
+  <div class="label"><h2>3. Doctor profile and slot selection</h2><span>FR-13, FR-14, US-04</span></div>
+  <div class="frame">
+    <div class="bar"><div class="logo"></div><div class="sp"></div><div class="lnk"></div><span class="btn s">Log in</span></div>
+    <div class="body" style="display:grid;grid-template-columns:260px 1fr;gap:24px">
+      <div>
+        <div class="av l"></div>
+        <p class="h1" style="margin-top:10px">Dr Priya Raman</p><p class="small">Cardiology</p>
+        <div class="txt w40"></div><b>£120</b> <span class="n">1</span>
+        <div class="txt w40" style="margin-top:12px"></div><b>14 years</b>
+        <div class="txt w50" style="margin-top:12px"></div><div class="txt w90"></div>
+        <div class="txt w40" style="margin-top:12px"></div><div class="txt w70"></div>
+        <div class="txt w90" style="margin-top:12px"></div><div class="txt w80"></div><div class="txt w60"></div>
+      </div>
+      <div class="box">
+        <p class="h2">Choose a time</p>
+        <div class="row" style="gap:8px;margin-bottom:12px"><div class="day">Fri<b>16</b>Ended</div><div class="day">Sat<b>17</b>Closed</div><div class="day on">Mon<b>19</b>12 free</div><div class="day">Tue<b>20</b>11 free</div><div class="day">Wed<b>21</b>13 free</div><div class="day">Thu<b>22</b>13 free</div><span class="n">2</span></div>
+        <div class="chips"><span class="chip bk">9:00am</span><span class="chip sel">9:30am</span><span class="chip">10:00am</span><span class="chip">10:30am</span><span class="chip">11:00am</span><span class="chip">11:30am</span><span class="chip">12:00pm</span><span class="chip">2:00pm</span><span class="chip">2:30pm</span><span class="chip">3:00pm</span><span class="n">3</span></div>
+        <p class="small" style="margin-top:10px">▢ Available &nbsp; ▨ Booked &nbsp; ⋯ Passed</p>
+        <div class="row" style="border-top:2px solid var(--g2);margin-top:14px;padding-top:12px"><span>Selected: <b>Mon 19 Oct, 9:30am</b></span><div class="sp"></div><span class="btn p">Continue to book</span><span class="n">4</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="notes"><h3>Notes</h3><ol>
+    <li>Fee, experience, qualifications, languages and bio. Fee is paid at the hospital (out of scope: online payment).</li>
+    <li>14-day date strip with free-slot count; weekends show "Closed", fully booked days "Full".</li>
+    <li>Only open future slots are selectable. Booked slots are struck through and disabled, so occupied slots can't be chosen (BR-02, BR-03, FR-14).</li>
+    <li>Guests can browse; on "Continue" they are sent to log in and returned to this slot (BR-01, FR-24).</li>
+  </ol></div>
+</section>
+
+<!-- 4 BOOKING -->
+<section class="screen" id="w4">
+  <div class="label"><h2>4. Appointment booking (review and confirm)</h2><span>FR-20, FR-21, FR-25, US-05</span></div>
+  <div class="frame">
+    <div class="bar"><div class="logo"></div><div class="sp"></div><div class="lnk"></div><div class="lnk"></div><span class="btn s">Log out</span></div>
+    <div class="body" style="max-width:640px;margin:0 auto">
+      <p class="small"><u>‹ Back to Dr Priya Raman</u></p>
+      <p class="h1">Review and confirm</p>
+      <div class="row" style="gap:6px;margin:8px 0 14px"><div style="flex:1;border-top:4px solid var(--g3)" class="small">Doctor</div><div style="flex:1;border-top:4px solid var(--g3)" class="small">Time</div><div style="flex:1;border-top:4px solid var(--k)"><b class="small">Confirm</b></div><span class="n">1</span></div>
+      <div class="alert">This slot is no longer available. Choose another time. <b>[BR-02]</b> <span class="n">2</span></div>
+      <div class="box" style="margin-bottom:12px">
+        <div class="row"><span class="small" style="width:120px">Doctor</span><b>Dr Priya Raman, Cardiology</b></div><hr style="border:0;border-top:1px solid var(--g2)">
+        <div class="row"><span class="small" style="width:120px">Date</span><b>Mon, 19 Oct 2026</b></div><hr style="border:0;border-top:1px solid var(--g2)">
+        <div class="row"><span class="small" style="width:120px">Time</span><b>9:30am (30 minutes)</b></div><hr style="border:0;border-top:1px solid var(--g2)">
+        <div class="row"><span class="small" style="width:120px">Fee</span><b>£120, paid at the hospital</b></div>
+      </div>
+      <div class="fld"><div class="lb">Reason for visit (optional) <span class="n">3</span></div><div class="inp" style="height:64px;align-items:flex-start;padding-top:8px">Briefly describe your symptoms</div></div>
+      <div class="row"><span class="btn p">Confirm booking</span><span class="btn">Change time</span><span class="n">4</span></div>
+    </div>
+  </div>
+  <div class="notes"><h3>Notes</h3><ol>
+    <li>Three-step progress so the patient knows this is the last step.</li>
+    <li>All rules re-checked on Confirm (slot still free, not in the past, no clash with the patient's own bookings, max 3 upcoming). The rule ID is shown for traceability (FR-21).</li>
+    <li>Optional reason, max 300 characters, visible to the doctor.</li>
+    <li>Confirm creates the appointment; Change time returns to the slot picker without losing the doctor.</li>
+  </ol></div>
+</section>
+
+<!-- 5 CONFIRMATION -->
+<section class="screen" id="w5">
+  <div class="label"><h2>5. Appointment confirmation</h2><span>FR-22, FR-23, FR-34</span></div>
+  <div class="frame">
+    <div class="bar"><div class="logo"></div><div class="sp"></div><div class="lnk"></div><div class="lnk"></div><span class="btn s">Log out</span></div>
+    <div class="body" style="max-width:640px;margin:0 auto">
+      <div class="row" style="margin-bottom:14px"><div class="av" style="background:var(--k);display:grid;place-items:center;color:#fff;font-size:22px">✓</div><div><p class="h1" style="margin:0">Appointment confirmed</p><p class="small" style="margin:0">We've sent the details to alice@demo.com <span class="n">1</span></p></div></div>
+      <div class="box" style="margin-bottom:12px">
+        <div class="row"><span class="small" style="width:120px">Reference</span><b style="letter-spacing:1px">APT-1013</b><span class="n">2</span></div><hr style="border:0;border-top:1px solid var(--g2)">
+        <div class="row"><span class="small" style="width:120px">Doctor</span><b>Dr Priya Raman</b></div><hr style="border:0;border-top:1px solid var(--g2)">
+        <div class="row"><span class="small" style="width:120px">Date &amp; time</span><b>Mon 19 Oct 2026, 9:30am</b></div><hr style="border:0;border-top:1px solid var(--g2)">
+        <div class="row"><span class="small" style="width:120px">Reason</span><b>Follow-up</b></div>
+      </div>
+      <div class="box" style="background:var(--g1);border-color:var(--g2)">Arrive 10 minutes early with photo ID. Cancel or reschedule online up to 2 hours before. <span class="n">3</span></div>
+      <div class="row" style="margin-top:14px"><span class="btn p">Go to my appointments</span><span class="btn">Book another</span></div>
+    </div>
+  </div>
+  <div class="notes"><h3>Notes</h3><ol>
+    <li>Email/SMS notification (FR-23); provider is a dependency.</li>
+    <li>Unique reference to quote at reception or on the phone.</li>
+    <li>States the cancellation cut-off up front (BR-10).</li>
+  </ol></div>
+</section>
+
+<!-- 6 PATIENT DASHBOARD -->
+<section class="screen" id="w6">
+  <div class="label"><h2>6. Patient dashboard</h2><span>FR-30 – FR-34, US-06 – US-08</span></div>
+  <div class="frame">
+    <div class="bar"><div class="logo"></div><div class="sp"></div><div class="lnk"></div><div class="lnk"></div><span class="btn s">Log out</span></div>
+    <div class="body">
+      <div class="row"><div><p class="h1">My appointments</p><p class="small">Hello Alice. You have 2 upcoming appointments.</p></div><div class="sp"></div><span class="btn p">Book an appointment</span></div>
+      <div class="tabs"><span class="on">Upcoming (2)</span><span>Past &amp; cancelled (2)</span><span class="n">1</span></div>
+      <div class="box row" style="margin-bottom:10px"><div style="width:50px;text-align:center;border-right:2px solid var(--g2)"><b style="font-size:20px">20</b><br><span class="small">Oct</span></div><div style="flex:1"><b>Dr Priya Raman</b> <span class="pill">Booked</span><p class="small" style="margin:2px 0">Cardiology · Tue 20 Oct, 10:00am · APT-1001</p></div><span class="btn s">Details</span><span class="btn s">Reschedule</span><span class="btn s">Cancel</span><span class="n">2</span></div>
+      <div class="box row" style="margin-bottom:16px"><div style="width:50px;text-align:center;border-right:2px solid var(--g2)"><b style="font-size:20px">16</b><br><span class="small">Oct</span></div><div style="flex:1"><b>Dr Grace Chen</b> <span class="pill">Booked</span><p class="small" style="margin:2px 0">Today, 5:30pm · Can't be changed online less than 2 hours before. Call 020 7946 0000. <span class="n">3</span></p></div><span class="btn s">Details</span><span class="btn s dis">Reschedule</span><span class="btn s dis">Cancel</span></div>
+      <div class="grid2">
+        <div class="box" style="border-color:var(--k)"><p class="h2">Modal: Cancel this appointment? <span class="n">4</span></p><div class="txt w90"></div><div class="txt w70"></div><div class="row" style="margin-top:10px"><span class="btn s p">Cancel appointment</span><span class="btn s">Keep appointment</span></div></div>
+        <div class="box" style="border-color:var(--k)"><p class="h2">Reschedule page <span class="n">5</span></p><p class="small">Currently Tue 20 Oct, 10:00am</p><div class="chips"><span class="chip off">current</span><span class="chip bk">10:30</span><span class="chip sel">11:00</span><span class="chip">11:30</span></div><div class="row" style="margin-top:10px"><div class="sp"></div><span class="btn s p">Confirm new time</span></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="notes"><h3>Notes</h3><ol>
+    <li>Upcoming sorted soonest first; Past &amp; cancelled most recent first.</li>
+    <li>Actions only on future Booked appointments.</li>
+    <li>Inside the 2-hour cut-off, buttons are disabled with the reason and a phone number (BR-10).</li>
+    <li>Confirmation modal; cancelling releases the slot immediately (BR-05).</li>
+    <li>Same-doctor slot picker; current slot marked; old slot released and new reserved in one step (BR-06, BR-14). Reference is kept.</li>
+  </ol></div>
+</section>
+
+<!-- 7 DOCTOR DASHBOARD -->
+<section class="screen" id="w7">
+  <div class="label"><h2>7. Doctor dashboard</h2><span>FR-40 – FR-46, US-09 – US-11</span></div>
+  <div class="frame">
+    <div class="bar"><div class="logo"></div><div class="sp"></div><div class="lnk"></div><div class="lnk"></div><div class="lnk"></div><span class="btn s">Log out</span></div>
+    <div class="body">
+      <p class="h1">Dr Priya Raman</p>
+      <div class="tabs"><span class="on">Schedule</span><span>Availability</span><span>Profile</span><span class="n">1</span></div>
+      <div class="stats" style="grid-template-columns:repeat(3,1fr)"><div class="stat"><b>2</b>booked on this day</div><div class="stat"><b>6</b>next 7 days</div><div class="stat"><b>1</b>past, still to close <span class="n">2</span></div></div>
+      <div class="row" style="margin-bottom:10px"><span class="btn s">‹</span><div class="inp" style="width:140px">16/10/2026</div><span class="btn s">›</span><span class="btn s">Today</span><b>Fri 16 Oct 2026</b></div>
+      <table><tr><th>Time</th><th>Patient</th><th>Reason</th><th>Status</th><th></th></tr>
+        <tr><td><b>11:30am</b></td><td>Chloe Adeyemi</td><td>Medication review</td><td><span class="pill">Booked</span></td><td style="text-align:right"><span class="btn s">Mark completed</span> <span class="btn s">Cancel</span></td></tr>
+        <tr><td><b>3:30pm</b></td><td>Ben Carter</td><td>Blood test results</td><td><span class="pill">Booked</span></td><td style="text-align:right"><span class="btn s dis">Mark completed</span> <span class="btn s">Cancel</span> <span class="n">3</span></td></tr>
+      </table>
+      <p class="h2" style="margin-top:18px">Availability tab <span class="n">4</span></p>
+      <div class="chips"><span class="chip">9:00 Open</span><span class="chip" style="background:var(--g2)">9:30 Booked 🔒</span><span class="chip">10:00 Open</span><span class="chip off">10:30 Not available</span><span class="chip off">11:00 Not available</span></div>
+      <div class="row" style="margin-top:10px"><span class="btn s p">Publish whole day</span><span class="btn s">Remove open slots</span></div>
+    </div>
+  </div>
+  <div class="notes"><h3>Notes</h3><ol>
+    <li>Doctors see only their own appointments (BR-07).</li>
+    <li>Highlights past appointments still marked Booked, so records get closed.</li>
+    <li>"Mark completed" is enabled only after the start time (BR-13). Cancel needs a reason, which is sent to the patient.</li>
+    <li>Click a time to publish or remove it. Booked slots are locked: cancel the appointment first (BR-12). Only future dates, up to 30 days, 30-minute slots 9:00–16:30 (BR-09).</li>
+  </ol></div>
+</section>
+
+<!-- 8 ADMIN DASHBOARD -->
+<section class="screen" id="w8">
+  <div class="label"><h2>8. Admin dashboard</h2><span>FR-50 – FR-57, US-12 – US-15</span></div>
+  <div class="frame">
+    <div class="bar"><div class="logo"></div><div class="sp"></div><div class="lnk"></div><div class="lnk"></div><div class="lnk"></div><div class="lnk"></div><span class="btn s">Log out</span></div>
+    <div class="body">
+      <p class="h1">Hospital administration</p>
+      <div class="tabs"><span class="on">Overview</span><span>Appointments</span><span>Doctors</span><span>Patients</span><span>Reports</span><span class="n">1</span></div>
+      <div class="stats"><div class="stat"><b>2</b>booked today</div><div class="stat"><b>0</b>completed today</div><div class="stat"><b>0</b>cancelled today</div><div class="stat"><b>9</b>next 7 days</div></div>
+      <div class="grid2" style="grid-template-columns:1.2fr 1fr">
+        <div class="box"><p class="h2">Bookings per doctor <span class="n">2</span></p>
+          <div class="row"><span class="small" style="width:110px">Dr Raman</span><div style="flex:1;height:10px;background:var(--g4)"></div></div>
+          <div class="row" style="margin-top:6px"><span class="small" style="width:110px">Dr Nowak</span><div style="width:20%;height:10px;background:var(--g4)"></div></div>
+          <div class="row" style="margin-top:6px"><span class="small" style="width:110px">Dr Chen</span><div style="width:20%;height:10px;background:var(--g4)"></div></div></div>
+        <div class="box"><p class="h2">Recent activity <span class="n">3</span></p><div class="txt w90"></div><div class="txt w80"></div><div class="txt w70"></div></div>
+      </div>
+      <p class="h2" style="margin-top:16px">Appointments tab <span class="n">4</span></p>
+      <div class="row" style="margin-bottom:8px"><div class="inp" style="width:110px">From</div><div class="inp" style="width:110px">To</div><div class="inp" style="width:140px">All doctors ▾</div><div class="inp" style="width:120px">All statuses ▾</div><div class="inp" style="flex:1">Patient or reference</div></div>
+      <table><tr><th>Ref</th><th>Date &amp; time</th><th>Patient</th><th>Doctor</th><th>Status</th><th></th></tr>
+        <tr><td>APT-1001</td><td>Tue 20 Oct, 10:00am</td><td>Alice Morgan</td><td>Dr Priya Raman</td><td><span class="pill">Booked</span></td><td style="text-align:right"><span class="btn s">Reschedule</span> <span class="btn s">Cancel</span></td></tr></table>
+      <p class="small" style="margin-top:10px">Doctors tab: add / edit / deactivate · Patients tab: deactivate / reactivate · Reports tab: date range, totals by status and doctor, Export CSV <span class="n">5</span></p>
+    </div>
+  </div>
+  <div class="notes"><h3>Notes</h3><ol>
+    <li>Tabs map to the admin responsibilities in the brief.</li>
+    <li>Demand per doctor for the next 7 days.</li>
+    <li>Audit log of create/cancel/reschedule/complete actions (FR-57).</li>
+    <li>Filter by date, doctor, status, patient; cancel or reschedule on behalf of a patient under the same slot rules (BR-08).</li>
+    <li>Deactivating a doctor warns about upcoming bookings (FR-56). Reports export to CSV (FR-55).</li>
+  </ol></div>
+</section>
+</body>
+</html>

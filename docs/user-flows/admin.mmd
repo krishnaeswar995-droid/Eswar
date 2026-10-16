@@ -1,0 +1,15 @@
+flowchart TD
+    A([Admin logs in]) --> B[Overview<br/>today's totals, bookings per doctor, activity log]
+    B --> C{Section}
+    C -- Appointments --> D[Filter by date, doctor, status, patient]
+    D --> D1{Action}
+    D1 -- Reschedule --> D2[Pick open slot same doctor] --> D3[(Moved, old slot released)]
+    D1 -- Cancel --> D4[Enter reason] --> D5[(Cancelled, slot released)]
+    C -- Doctors --> E{Action}
+    E -- Add --> E1[Name, email, specialization,<br/>fee, qualifications] --> E2[(Doctor + login created)]
+    E -- Edit --> E3[(Profile, fee, specialization updated)]
+    E -- Deactivate --> E4{Has upcoming bookings?}
+    E4 -- Yes --> E5[Warn with count] --> E6
+    E4 -- No --> E6[(Hidden from search,<br/>no new bookings BR-15)]
+    C -- Patients --> F[Deactivate / reactivate account]
+    C -- Reports --> G[Choose date range] --> G1[Totals by status and doctor] --> G2[Export CSV]

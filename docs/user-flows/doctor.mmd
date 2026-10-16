@@ -1,0 +1,18 @@
+flowchart TD
+    A([Doctor logs in]) --> B[Doctor dashboard - Schedule<br/>own appointments only BR-07]
+    B --> C{Choose}
+    C -- Schedule --> D[Select day]
+    D --> E{Appointment action}
+    E -- Mark completed --> E1{Start time passed?<br/>BR-13}
+    E1 -- No --> E2[Button disabled]
+    E1 -- Yes --> E3[(Status = Completed)]
+    E -- Cancel --> E4[Enter reason] --> E5[(Status = Cancelled<br/>patient notified, slot released)]
+    C -- Availability --> F[Select date up to 30 days ahead]
+    F --> G{Click a time}
+    G -- Not published --> G1{Future, on the half hour,<br/>09:00-16:30? BR-09}
+    G1 -- No --> G2[Error message]
+    G1 -- Yes --> G3[(Slot published - bookable)]
+    G -- Open slot --> G4[(Slot removed)]
+    G -- Booked slot --> G5[Blocked: cancel the<br/>appointment first BR-12]
+    C -- Profile --> H[Edit bio, qualifications,<br/>languages, experience]
+    H --> H1[(Saved - visible to patients)]

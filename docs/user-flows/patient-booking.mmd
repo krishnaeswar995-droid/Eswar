@@ -1,0 +1,26 @@
+flowchart TD
+    A([Patient opens site]) --> B[Search doctors<br/>filter by specialization / name]
+    B --> C{Doctors found?}
+    C -- No --> B1[No doctors found<br/>Clear filters] --> B
+    C -- Yes --> D[View doctor profile<br/>fee, experience, 14-day slots]
+    D --> E[Select date and open slot]
+    E --> F{Logged in as patient?}
+    F -- No --> G{Has account?}
+    G -- No --> G1[Register] --> H
+    G -- Yes --> G2[Log in] --> H
+    F -- Yes --> H[Review and confirm<br/>add reason for visit]
+    H --> I{Re-check slot at confirm<br/>BR-02/03/04/09/11/16}
+    I -- Slot taken / invalid --> I1[Error: choose another time] --> E
+    I -- Valid --> J[(Appointment created<br/>status = Booked, ref APT-xxxx)]
+    J --> K[Confirmation page<br/>+ email/SMS notification]
+    K --> L[Patient dashboard<br/>Upcoming / Past]
+    L --> M{Action}
+    M -- Cancel --> N{More than 2h before start?<br/>BR-10}
+    N -- No --> N1[Disabled: call hospital]
+    N -- Yes --> N2[Confirm cancel] --> N3[(Status = Cancelled<br/>slot released BR-05)] --> L
+    M -- Reschedule --> R{More than 2h before start?}
+    R -- No --> N1
+    R -- Yes --> R1[Pick new open slot<br/>same doctor BR-14]
+    R1 --> R2{New slot still free?<br/>BR-06}
+    R2 -- No --> R3[Error, original kept] --> R1
+    R2 -- Yes --> R4[(Moved: old slot released,<br/>new slot reserved)] --> K

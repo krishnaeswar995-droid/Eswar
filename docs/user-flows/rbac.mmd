@@ -1,0 +1,8 @@
+flowchart LR
+    U([Any page request]) --> A{Logged in?}
+    A -- No --> P{Public page?<br/>home, doctors, profile, login, register}
+    P -- Yes --> OK[Show page]
+    P -- No --> L[Redirect to login<br/>then back to the page]
+    A -- Yes --> R{Role allowed?<br/>patient / doctor / admin}
+    R -- Yes --> OK
+    R -- No --> H[Redirect to own dashboard<br/>'You do not have access']
