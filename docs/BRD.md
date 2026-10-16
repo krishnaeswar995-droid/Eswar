@@ -90,7 +90,7 @@ Priority uses MoSCoW (M = Must, S = Should, C = Could).
 | FR-10 | Users can list all active doctors and filter by specialization. | M |
 | FR-11 | Users can search doctors by name (partial, case-insensitive). | S |
 | FR-12 | Doctor cards show name, specialization, experience, consultation fee and next available slot. | M |
-| FR-13 | Doctor profile shows photo/initials, qualifications, experience, languages, fee, bio and bookable slots for the next 14 days. | M |
+| FR-13 | Doctor profile shows photo/initials, qualifications, experience, languages, fee, bio and bookable slots for the next 30 days (booking horizon, BR-09). | M |
 | FR-14 | Only future, open slots are shown as selectable; booked and past slots are shown disabled or hidden. | M |
 
 ### 6.3 Booking
@@ -183,7 +183,7 @@ Acceptance criteria are written in Given / When / Then form.
 - AC3: Given no doctors match, then I see "No doctors found" and an option to clear filters.
 
 **US-04 View doctor profile** — *As a patient, I want to see a doctor's details, fee and free slots so that I can choose a time.*
-- AC1: Profile shows qualifications, experience, fee and the next 14 days of availability.
+- AC1: Profile shows qualifications, experience, fee and availability for the next 30 days.
 - AC2: Booked and past slots are not selectable.
 
 **US-05 Book an appointment** — *As a patient, I want to book an open slot so that my visit is confirmed.*
@@ -304,17 +304,22 @@ Acceptance criteria are written in Given / When / Then form.
 
 ## 14. Traceability (summary)
 
+Full matrix and execution results: [`docs/testing/test-cases.xlsx`](testing/test-cases.xlsx) (sheet *Traceability*).
+
 | Business rule | Functional requirement | User story | Test cases |
 |---|---|---|---|
-| BR-01 | FR-03, FR-05, FR-24 | US-02, US-05 | TC-21 – TC-25 |
+| BR-01 | FR-03, FR-05, FR-24 | US-02, US-05 | TC-02, TC-21, TC-23, TC-25 |
 | BR-02 / BR-03 | FR-14, FR-21 | US-05 | TC-04 – TC-08 |
-| BR-04 / BR-09 | FR-14, FR-20 | US-05 | TC-09 – TC-12 |
-| BR-05 / BR-10 | FR-31, FR-33 | US-07 | TC-13 – TC-16 |
-| BR-06 / BR-14 | FR-32 | US-08 | TC-17 – TC-20 |
+| BR-04 / BR-09 | FR-14, FR-20, FR-41 | US-05, US-09 | TC-09 – TC-12, TC-30 |
+| BR-05 / BR-10 | FR-31, FR-33, FR-45 | US-07, US-11 | TC-13 – TC-16, TC-19, TC-26 |
+| BR-06 / BR-14 | FR-32, FR-53 | US-08, US-14 | TC-17, TC-18, TC-20 |
 | BR-07 | FR-46 | US-10 | TC-24 |
-| BR-08 | FR-50 – FR-55 | US-12 – US-15 | TC-26, TC-33 – TC-35 |
+| BR-08 | FR-50 – FR-55 | US-12 – US-15 | TC-20, TC-26, TC-33 – TC-35 |
 | BR-11 | FR-25 | US-05 | TC-07 |
 | BR-12 / BR-13 | FR-41 – FR-45 | US-09, US-11 | TC-27 – TC-32 |
+| BR-15 / BR-16 | FR-50, FR-56 | US-12, US-05 | TC-33, TC-37 |
+| FR-01 / FR-02 | — | US-01 | TC-03, TC-36 |
+| NFR-01 | — | — | TC-38 |
 
 ## 15. Approval
 

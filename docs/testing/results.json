@@ -1,0 +1,767 @@
+{
+  "executedAt": "2026-10-16T16:15:36.703Z",
+  "clock": "2026-10-14T08:00:00+01:00",
+  "cases": [
+    {
+      "id": "TC-01",
+      "area": "Successful booking",
+      "req": "FR-20, FR-22, BR-01",
+      "priority": "High",
+      "scenario": "Logged-in patient books an open slot",
+      "pre": "Alice is registered and logged in; Dr Grace Chen has an open slot on Mon 19 Oct 11:00.",
+      "steps": [
+        "Open Find a doctor and select Dr Grace Chen",
+        "Select Mon 19 Oct and the 11:00am slot",
+        "Click Continue to book",
+        "Enter a reason and click Confirm booking",
+        "Open My appointments"
+      ],
+      "data": "alice@demo.com / Patient@123; Doctor d7; 2026-10-19 11:00; Reason \"Persistent cough\"",
+      "expected": "Confirmation page \"Appointment confirmed\" with reference APT-1013; the appointment is listed under Upcoming with status Booked."
+    },
+    {
+      "id": "TC-02",
+      "area": "Successful booking",
+      "req": "BR-01, FR-24",
+      "priority": "High",
+      "scenario": "Guest selects a slot, is asked to log in, and returns to complete the booking",
+      "pre": "User is not logged in.",
+      "steps": [
+        "Open Dr Grace Chen profile as a guest",
+        "Select Mon 19 Oct 11:00 and click Continue to book",
+        "Log in as Alice",
+        "Click Confirm booking"
+      ],
+      "data": "alice@demo.com / Patient@123; d7; 2026-10-19 11:00",
+      "expected": "Guest is redirected to Log in with a message; after login the Review and confirm page opens for the same slot; booking is confirmed."
+    },
+    {
+      "id": "TC-03",
+      "area": "Successful booking",
+      "req": "FR-01, FR-03, FR-20",
+      "priority": "High",
+      "scenario": "New patient registers and books their first appointment",
+      "pre": "Email test.patient@demo.com is not registered.",
+      "steps": [
+        "Open Register and complete all fields",
+        "Click Create account",
+        "Book Dr Amelia Okafor, Tue 20 Oct 14:00"
+      ],
+      "data": "Test Patient; test.patient@demo.com; 07700900555; 05/05/1990; Test1234",
+      "expected": "Account created and patient dashboard opens with 0 upcoming; booking is confirmed and shown in Upcoming."
+    },
+    {
+      "id": "TC-04",
+      "area": "Unavailable slot",
+      "req": "BR-02, FR-14",
+      "priority": "High",
+      "scenario": "An already-booked slot is shown as unavailable and cannot be selected",
+      "pre": "Ben has Dr Priya Raman on Fri 16 Oct 10:30.",
+      "steps": [
+        "Log in as Alice",
+        "Open Dr Priya Raman, select Fri 16 Oct",
+        "Try to click 10:30am"
+      ],
+      "data": "alice@demo.com; d1; 2026-10-16 10:30",
+      "expected": "10:30am is struck through and disabled; clicking it does not select it; Continue to book stays disabled."
+    },
+    {
+      "id": "TC-05",
+      "area": "Unavailable slot",
+      "req": "BR-02, FR-21",
+      "priority": "High",
+      "scenario": "Booking an occupied slot by opening the booking URL directly is rejected",
+      "pre": "Alice logged in; d1 Fri 16 Oct 10:30 booked by Ben.",
+      "steps": [
+        "Navigate to #/book/d1?date=2026-10-16&time=10:30"
+      ],
+      "data": "URL parameters date=2026-10-16, time=10:30",
+      "expected": "Error \"This slot is no longer available. Choose another time.\" [BR-02]; Confirm booking disabled."
+    },
+    {
+      "id": "TC-06",
+      "area": "Unavailable slot",
+      "req": "FR-21, NFR-03",
+      "priority": "High",
+      "scenario": "Slot is taken by another patient while the first patient is on the review page",
+      "pre": "Alice on Review and confirm for d7 Mon 19 Oct 11:30.",
+      "steps": [
+        "Select d7 Mon 19 Oct 11:30 and continue",
+        "Open Demo tools and click \"Another patient books this slot\"",
+        "Attempt to confirm"
+      ],
+      "data": "d7; 2026-10-19 11:30",
+      "expected": "Booking is blocked with \"This slot is no longer available\" and a link to choose another time; no appointment is created for Alice."
+    },
+    {
+      "id": "TC-07",
+      "area": "Double-booking prevention",
+      "req": "BR-11, FR-25",
+      "priority": "High",
+      "scenario": "Patient cannot book two appointments at the same date and time with different doctors",
+      "pre": "Alice has APT-1001 with Dr Raman on Fri 16 Oct 10:00.",
+      "steps": [
+        "Open Dr Tomasz Nowak",
+        "Select Fri 16 Oct 10:00 and continue"
+      ],
+      "data": "d4; 2026-10-16 10:00",
+      "expected": "Error \"You already have an appointment at this time (APT-1001).\" [BR-11]; Confirm disabled."
+    },
+    {
+      "id": "TC-08",
+      "area": "Double-booking prevention",
+      "req": "BR-02, BR-03",
+      "priority": "High",
+      "scenario": "Once a slot is booked, a second patient cannot book the same doctor and time",
+      "pre": "Dr Omar Haddad Mon 19 Oct 14:00 is open.",
+      "steps": [
+        "Alice books d6 Mon 19 Oct 14:00",
+        "Log out; register a second patient",
+        "Open d6 profile on Mon 19 Oct",
+        "Open #/book/d6?date=2026-10-19&time=14:00 directly"
+      ],
+      "data": "alice@demo.com; second.patient@demo.com / Test1234",
+      "expected": "Second patient sees 2:00pm as booked; direct booking shows BR-02 error; the doctor has only one appointment at that time."
+    },
+    {
+      "id": "TC-09",
+      "area": "Invalid date/time",
+      "req": "BR-04, BR-09",
+      "priority": "High",
+      "scenario": "Booking a date/time in the past is rejected",
+      "pre": "Alice logged in. Current time Wed 14 Oct 08:00.",
+      "steps": [
+        "Open the profile: past dates are not shown and today's past slots are disabled",
+        "Navigate to #/book/d7?date=2026-10-13&time=10:00"
+      ],
+      "data": "date=2026-10-13, time=10:00",
+      "expected": "Date strip starts today; error \"This date and time is in the past. Choose a future slot.\" [BR-09]; Confirm disabled."
+    },
+    {
+      "id": "TC-10",
+      "area": "Invalid date/time",
+      "req": "BR-09",
+      "priority": "Medium",
+      "scenario": "Time not on a 30-minute boundary or outside 09:00–16:30 is rejected",
+      "pre": "Alice logged in.",
+      "steps": [
+        "Navigate to #/book/d7?date=2026-10-19&time=10:15",
+        "Navigate to #/book/d7?date=2026-10-19&time=18:00"
+      ],
+      "data": "time=10:15; time=18:00",
+      "expected": "Both show \"Appointments start on the half hour between 9:00am and 4:30pm.\" [BR-09]."
+    },
+    {
+      "id": "TC-11",
+      "area": "Invalid date/time",
+      "req": "BR-04",
+      "priority": "Medium",
+      "scenario": "Time outside the doctor's published availability, and non-clinic days",
+      "pre": "Dr James Whitfield works mornings only. No clinics at weekends.",
+      "steps": [
+        "Open Dr Priya Raman, select Sat 17 Oct",
+        "Navigate to #/book/d2?date=2026-10-19&time=15:00"
+      ],
+      "data": "Saturday 2026-10-17; d2 15:00",
+      "expected": "Saturday shows \"Closed\" and \"No clinic on this day\"; direct booking shows \"The doctor is not available at this time.\" [BR-04]."
+    },
+    {
+      "id": "TC-12",
+      "area": "Invalid date/time",
+      "req": "BR-04, BR-09",
+      "priority": "Medium",
+      "scenario": "Malformed date/time and dates beyond the 30-day booking horizon are rejected",
+      "pre": "Alice logged in.",
+      "steps": [
+        "Navigate to #/book/d7?date=2026-02-30&time=10:00",
+        "Navigate to #/book/d7?date=2026-10-19&time=25:00",
+        "Navigate to #/book/d7?date=2026-11-20&time=10:00"
+      ],
+      "data": "2026-02-30; 25:00; 2026-11-20 (37 days ahead)",
+      "expected": "First two: \"Select a valid date and time.\" [BR-04]. Third: \"Appointments can be booked up to 30 days ahead.\" [BR-09]."
+    },
+    {
+      "id": "TC-13",
+      "area": "Cancellation",
+      "req": "FR-31, BR-05",
+      "priority": "High",
+      "scenario": "Patient cancels an upcoming appointment more than 2 hours ahead",
+      "pre": "Alice has APT-1001 (Fri 16 Oct 10:00).",
+      "steps": [
+        "Open My appointments",
+        "Click Cancel on APT-1001",
+        "Click Cancel appointment in the dialog",
+        "Open Past & cancelled tab"
+      ],
+      "data": "APT-1001",
+      "expected": "Dialog asks for confirmation; toast confirms the slot is free; APT-1001 leaves Upcoming and appears under Past & cancelled as Cancelled."
+    },
+    {
+      "id": "TC-14",
+      "area": "Cancellation",
+      "req": "BR-05",
+      "priority": "High",
+      "scenario": "A cancelled appointment releases the slot for other patients",
+      "pre": "Alice has cancelled APT-1001 (d1 Fri 16 Oct 10:00).",
+      "steps": [
+        "Alice cancels APT-1001",
+        "Log out and register a new patient",
+        "Open Dr Priya Raman, Fri 16 Oct",
+        "Book 10:00am"
+      ],
+      "data": "release.test@demo.com / Test1234",
+      "expected": "10:00am shows as available again and the new patient can book it."
+    },
+    {
+      "id": "TC-15",
+      "area": "Cancellation",
+      "req": "BR-10, FR-33",
+      "priority": "High",
+      "scenario": "Patient cannot cancel online less than 2 hours before the appointment",
+      "pre": "Clock 10:00 on Wed 14 Oct. Chloe has APT-1011 today at 11:30.",
+      "steps": [
+        "Log in as Chloe",
+        "Open My appointments and find APT-1011"
+      ],
+      "data": "chloe@demo.com; APT-1011 (today 11:30)",
+      "expected": "Cancel and Reschedule are disabled; message says changes are not possible online within 2 hours and gives the hospital phone number.",
+      "clock": "2026-10-14T10:00:00+01:00"
+    },
+    {
+      "id": "TC-16",
+      "area": "Cancellation",
+      "req": "FR-45, BR-05",
+      "priority": "Medium",
+      "scenario": "Doctor cancels an appointment with a reason; patient sees it cancelled",
+      "pre": "Dr Raman logged in; APT-1001 on Fri 16 Oct 10:00.",
+      "steps": [
+        "Schedule tab, go to Fri 16 Oct",
+        "Click Cancel on APT-1001",
+        "Click Cancel appointment with an empty reason",
+        "Enter a reason and confirm",
+        "Log in as Alice and check Past & cancelled"
+      ],
+      "data": "Reason \"Doctor unwell\"",
+      "expected": "Empty reason is rejected (\"Enter a reason for cancelling.\"); with a reason the status becomes Cancelled; Alice sees APT-1001 as Cancelled."
+    },
+    {
+      "id": "TC-17",
+      "area": "Rescheduling",
+      "req": "FR-32, BR-06, BR-14",
+      "priority": "High",
+      "scenario": "Patient reschedules to another open slot with the same doctor",
+      "pre": "Alice has APT-1001 (d1 Fri 16 Oct 10:00).",
+      "steps": [
+        "Click Reschedule on APT-1001",
+        "Select Fri 16 Oct 11:00",
+        "Click Confirm new time",
+        "Check Dr Raman Fri 16 Oct 10:00 as another patient"
+      ],
+      "data": "New slot 2026-10-16 11:00",
+      "expected": "Confirmation shows Fri 16 Oct 11:00am with the same reference APT-1001; the old 10:00 slot is available again."
+    },
+    {
+      "id": "TC-18",
+      "area": "Rescheduling",
+      "req": "BR-06",
+      "priority": "High",
+      "scenario": "Patient cannot reschedule into an unavailable slot",
+      "pre": "Alice rescheduling APT-1001; Ben holds 10:30 the same day.",
+      "steps": [
+        "Open Reschedule for APT-1001",
+        "Select Fri 16 Oct",
+        "Try 10:30am and the current 10:00am slot"
+      ],
+      "data": "2026-10-16 10:30 (booked), 10:00 (current)",
+      "expected": "Both slots disabled (10:00 labelled \"current\"); Confirm new time stays disabled; appointment unchanged."
+    },
+    {
+      "id": "TC-19",
+      "area": "Rescheduling",
+      "req": "BR-10",
+      "priority": "Medium",
+      "scenario": "Rescheduling is blocked less than 2 hours before the appointment",
+      "pre": "Clock 10:00 Wed 14 Oct; Chloe's APT-1011 is today 11:30.",
+      "steps": [
+        "Log in as Chloe",
+        "Navigate to #/reschedule/APT-1011"
+      ],
+      "data": "APT-1011",
+      "expected": "Error with BR-10; no slot picker shown.",
+      "clock": "2026-10-14T10:00:00+01:00"
+    },
+    {
+      "id": "TC-20",
+      "area": "Rescheduling",
+      "req": "FR-53, BR-08",
+      "priority": "Medium",
+      "scenario": "Admin reschedules an appointment on behalf of a patient",
+      "pre": "Admin logged in; Ben has APT-1007 with Dr Nowak Mon 19 Oct 11:00.",
+      "steps": [
+        "Admin > Appointments",
+        "Click Reschedule on APT-1007",
+        "Select Mon 19 Oct 11:30, confirm"
+      ],
+      "data": "APT-1007 → 2026-10-19 11:30",
+      "expected": "Returns to the admin appointment list; APT-1007 shows Mon 19 Oct, 11:30am."
+    },
+    {
+      "id": "TC-21",
+      "area": "Login & role-based access",
+      "req": "FR-03, US-02",
+      "priority": "High",
+      "scenario": "Each role lands on its own dashboard after login",
+      "pre": "Demo accounts exist for each role.",
+      "steps": [
+        "Log in as patient",
+        "Log out, log in as doctor",
+        "Log out, log in as admin"
+      ],
+      "data": "alice@demo.com; priya.raman@hospital.demo; admin@hospital.demo",
+      "expected": "Patient → My appointments; Doctor → Schedule; Admin → Hospital administration."
+    },
+    {
+      "id": "TC-22",
+      "area": "Login & role-based access",
+      "req": "FR-04",
+      "priority": "High",
+      "scenario": "Invalid or missing credentials are rejected with a generic message",
+      "pre": "On the Log in page.",
+      "steps": [
+        "Submit empty form",
+        "Submit alice@demo.com with a wrong password",
+        "Submit an unknown email"
+      ],
+      "data": "wrong password \"Wrong@123\"; nobody@demo.com",
+      "expected": "Empty: \"Enter your email and password.\" Wrong password and unknown email both show the same \"Invalid email or password.\" User stays on Log in."
+    },
+    {
+      "id": "TC-23",
+      "area": "Login & role-based access",
+      "req": "FR-05, BR-01",
+      "priority": "High",
+      "scenario": "Guest cannot open protected pages",
+      "pre": "Not logged in.",
+      "steps": [
+        "Navigate to #/patient",
+        "Navigate to #/admin",
+        "Navigate to #/book/d7?date=2026-10-19&time=10:00"
+      ],
+      "data": "Protected URLs",
+      "expected": "Each redirects to Log in (with return path)."
+    },
+    {
+      "id": "TC-24",
+      "area": "Login & role-based access",
+      "req": "FR-05, BR-07",
+      "priority": "High",
+      "scenario": "Users cannot open another role's pages; doctors see only their own appointments",
+      "pre": "Alice and Dr Raman accounts.",
+      "steps": [
+        "As Alice open #/admin and #/doctor",
+        "As Dr Raman open #/admin",
+        "As Dr Raman view Mon 19 Oct schedule"
+      ],
+      "data": "APT-1007 belongs to Dr Nowak on Mon 19 Oct",
+      "expected": "Alice is returned to My appointments with \"You do not have access to that page.\"; doctor returned to Schedule; Dr Raman's schedule never shows APT-1007."
+    },
+    {
+      "id": "TC-25",
+      "area": "Login & role-based access",
+      "req": "FR-51",
+      "priority": "Medium",
+      "scenario": "Deactivated patient cannot log in",
+      "pre": "Daniel Price's account is deactivated.",
+      "steps": [
+        "Log in as daniel@demo.com"
+      ],
+      "data": "daniel@demo.com / Patient@123",
+      "expected": "\"This account is deactivated. Contact the hospital.\" and the user stays on Log in."
+    },
+    {
+      "id": "TC-26",
+      "area": "Admin appointment management",
+      "req": "FR-53, BR-08",
+      "priority": "Medium",
+      "scenario": "Admin cancels a patient's appointment with a reason",
+      "pre": "Admin logged in; APT-1002 (Alice, Dr Chen, Wed 21 Oct) is Booked.",
+      "steps": [
+        "Admin > Appointments",
+        "Click Cancel on APT-1002",
+        "Enter reason \"Patient called to cancel\" and confirm"
+      ],
+      "data": "APT-1002",
+      "expected": "Status changes to Cancelled; slot released; action appears in Recent activity."
+    },
+    {
+      "id": "TC-27",
+      "area": "Doctor availability",
+      "req": "FR-41, US-09",
+      "priority": "High",
+      "scenario": "Doctor publishes a new slot and patients can see it",
+      "pre": "Dr Raman has no 12:30 slot on Tue 20 Oct.",
+      "steps": [
+        "Doctor > Availability, go to Tue 20 Oct",
+        "Click 12:30pm (Not available)",
+        "Log out; open Dr Raman profile as guest on Tue 20 Oct"
+      ],
+      "data": "2026-10-20 12:30",
+      "expected": "Slot changes to Open; guest sees 12:30pm as an available slot."
+    },
+    {
+      "id": "TC-28",
+      "area": "Doctor availability",
+      "req": "FR-42",
+      "priority": "High",
+      "scenario": "Doctor removes an open slot and it disappears for patients",
+      "pre": "Dr Raman has an open 09:00 slot on Tue 20 Oct.",
+      "steps": [
+        "Availability > Tue 20 Oct, click 9:00am (Open)",
+        "Check the profile as a guest"
+      ],
+      "data": "2026-10-20 09:00",
+      "expected": "Slot shows Not available; 9:00am no longer listed on the profile."
+    },
+    {
+      "id": "TC-29",
+      "area": "Doctor availability",
+      "req": "BR-12, FR-43",
+      "priority": "High",
+      "scenario": "Doctor cannot remove a slot that is already booked",
+      "pre": "APT-1001 (Alice) occupies Fri 16 Oct 10:00.",
+      "steps": [
+        "Availability > Fri 16 Oct",
+        "Click 10:00am (Booked)"
+      ],
+      "data": "2026-10-16 10:00",
+      "expected": "Error \"This slot is booked (APT-1001). Cancel the appointment first.\" [BR-12]; slot stays Booked."
+    },
+    {
+      "id": "TC-30",
+      "area": "Doctor availability",
+      "req": "BR-09",
+      "priority": "Medium",
+      "scenario": "Doctor cannot add availability for a past date or beyond 30 days",
+      "pre": "Dr Raman logged in.",
+      "steps": [
+        "Availability > Tue 13 Oct (yesterday)",
+        "Click a Not available slot",
+        "Go to Sat 14 Nov (31 days ahead)"
+      ],
+      "data": "2026-10-13; 2026-11-14",
+      "expected": "Past date: warning and \"Publish whole day\" disabled; adding a slot is rejected. Beyond 30 days: warning and Publish disabled."
+    },
+    {
+      "id": "TC-31",
+      "area": "Doctor availability",
+      "req": "FR-45, BR-13",
+      "priority": "Medium",
+      "scenario": "Doctor can mark an appointment completed only after its start time",
+      "pre": "APT-1006 (Ben) was yesterday 09:00 and is still Booked; APT-1001 is Fri 16 Oct.",
+      "steps": [
+        "Schedule > Tue 13 Oct, click Mark completed on APT-1006",
+        "Go to Fri 16 Oct and check APT-1001"
+      ],
+      "data": "APT-1006, APT-1001",
+      "expected": "APT-1006 becomes Completed; \"Mark completed\" is disabled for future APT-1001."
+    },
+    {
+      "id": "TC-32",
+      "area": "Doctor availability",
+      "req": "FR-41",
+      "priority": "Medium",
+      "scenario": "Doctor publishes a whole day further ahead and patients see the new slots",
+      "pre": "Mon 2 Nov has no availability for Dr Raman.",
+      "steps": [
+        "Availability > Mon 2 Nov",
+        "Click Publish whole day",
+        "Open Dr Raman profile as a patient, scroll the date strip to 2 Nov"
+      ],
+      "data": "2026-11-02",
+      "expected": "All 16 slots (9:00–16:30) become Open; patient date strip shows \"16 free\" for 2 Nov."
+    },
+    {
+      "id": "TC-33",
+      "area": "Admin doctor management",
+      "req": "FR-50, FR-56, BR-15",
+      "priority": "Medium",
+      "scenario": "Admin deactivates a doctor; doctor disappears from search",
+      "pre": "Dr Grace Chen is active with upcoming bookings.",
+      "steps": [
+        "Admin > Doctors, click Deactivate for Dr Grace Chen",
+        "Accept the warning",
+        "As guest open Find a doctor and #/doctors/d7"
+      ],
+      "data": "d7",
+      "expected": "Warning shows the number of upcoming appointments; status Inactive; Dr Chen not listed; profile shows \"Doctor not available\"."
+    },
+    {
+      "id": "TC-34",
+      "area": "Admin doctor management",
+      "req": "FR-50",
+      "priority": "Medium",
+      "scenario": "Admin adds a doctor (with validation)",
+      "pre": "Admin logged in.",
+      "steps": [
+        "Admin > Doctors > Add doctor",
+        "Click Add doctor with empty form",
+        "Fill details and save",
+        "As guest filter Find a doctor by ENT"
+      ],
+      "data": "Dr Test Doctor; test.doctor@hospital.demo; ENT; £75; 5 yrs; MBBS",
+      "expected": "Empty form shows field errors; after saving the doctor appears in the table and in ENT search with \"No free slots in the next 30 days\"."
+    },
+    {
+      "id": "TC-35",
+      "area": "Admin reporting",
+      "req": "FR-52, FR-55, US-15",
+      "priority": "Medium",
+      "scenario": "Admin filters appointments and exports a report",
+      "pre": "Admin logged in; seed data loaded.",
+      "steps": [
+        "Appointments tab: filter Status = Cancelled",
+        "Reports tab: keep default range",
+        "Click Export CSV",
+        "Set From after To"
+      ],
+      "data": "Status Cancelled; default range ±14 days",
+      "expected": "Only cancelled appointments listed (APT-1004); report shows totals by status and doctor; CSV downloads with one row per appointment; invalid range shows an error."
+    },
+    {
+      "id": "TC-36",
+      "area": "Registration validation",
+      "req": "FR-01, FR-02",
+      "priority": "Medium",
+      "scenario": "Registration rejects a duplicate email and invalid fields",
+      "pre": "alice@demo.com already registered.",
+      "steps": [
+        "Open Register, click Create account with empty form",
+        "Enter alice@demo.com, valid other fields, mismatched confirm password",
+        "Fix the password and submit"
+      ],
+      "data": "alice@demo.com; Test1234 / Test9999",
+      "expected": "Empty form: errors on all 5 required fields. Mismatch: \"Passwords do not match.\" Duplicate: \"An account with this email already exists.\" No account created."
+    },
+    {
+      "id": "TC-37",
+      "area": "Booking limits",
+      "req": "BR-16",
+      "priority": "Low",
+      "scenario": "Patient with 3 upcoming appointments cannot book a fourth",
+      "pre": "Ben has 3 upcoming appointments.",
+      "steps": [
+        "Log in as Ben",
+        "Select Dr Grace Chen Mon 19 Oct 10:00 and continue"
+      ],
+      "data": "ben@demo.com",
+      "expected": "\"You can hold up to 3 upcoming appointments. Cancel one to book another.\" [BR-16]; Confirm disabled."
+    },
+    {
+      "id": "TC-38",
+      "area": "Responsive UI",
+      "req": "NFR-01",
+      "priority": "Medium",
+      "scenario": "Booking journey works on a mobile screen (390 × 844)",
+      "pre": "Mobile viewport.",
+      "steps": [
+        "Open the site on a 390px wide screen",
+        "Open the Menu",
+        "Log in as Alice and book Dr Grace Chen Mon 19 Oct 10:00"
+      ],
+      "data": "Viewport 390×844",
+      "expected": "Navigation collapses behind a Menu button; no horizontal scrolling; booking completes."
+    }
+  ],
+  "results": [
+    {
+      "id": "TC-01",
+      "status": "Pass",
+      "actual": "Confirmation shown with reference APT-1013; APT-1013 listed under Upcoming as Booked."
+    },
+    {
+      "id": "TC-02",
+      "status": "Pass",
+      "actual": "Redirected to login (\"Log in as a patient to finish booking. You'll come straight …\"); returned to the same slot after login; booking confirmed (APT-1013)."
+    },
+    {
+      "id": "TC-03",
+      "status": "Pass",
+      "actual": "Account created, dashboard showed \"Hello Test. You have 0 upcoming appointments.\"; booking with Dr Okafor confirmed."
+    },
+    {
+      "id": "TC-04",
+      "status": "Pass",
+      "actual": "10:30am shown as booked (struck through, disabled); click had no effect; Continue to book remained disabled."
+    },
+    {
+      "id": "TC-05",
+      "status": "Pass",
+      "actual": "Error shown: \"This slot is no longer available. Choose another time. Choose another time BR-02\"; Confirm booking disabled."
+    },
+    {
+      "id": "TC-06",
+      "status": "Pass",
+      "actual": "Error shown: \"This slot is no longer available. Choose another time. Choose another time BR-02\"; Confirm disabled; Alice still has 2 upcoming appointments (none created)."
+    },
+    {
+      "id": "TC-07",
+      "status": "Pass",
+      "actual": "Blocked: \"You already have an appointment at this time (APT-1001). BR-11\"."
+    },
+    {
+      "id": "TC-08",
+      "status": "Pass",
+      "actual": "Slot shown booked to second patient; direct URL blocked (\"This slot is no longer available. Choose another time. Choose another time BR-02\"); exactly 1 booking at d6 14:00."
+    },
+    {
+      "id": "TC-09",
+      "status": "Pass",
+      "actual": "Date strip starts on 2026-10-14; direct URL rejected: \"This date and time is in the past. Choose a future slot. Choose another time BR-09\"."
+    },
+    {
+      "id": "TC-10",
+      "status": "Pass",
+      "actual": "10:15 and 18:00 both rejected: \"Appointments start on the half hour between 9:00am and 4:30pm. Choose another time BR-09\"."
+    },
+    {
+      "id": "TC-11",
+      "status": "Pass",
+      "actual": "Saturday labelled \"Closed\" with \"No clinic on this day. Pick another date.\"; d2 15:00 rejected: \"The doctor is not available at this time. Choose one of the listed slots. Choose another time BR-04\"."
+    },
+    {
+      "id": "TC-12",
+      "status": "Pass",
+      "actual": "Invalid date and time rejected (\"Select a valid date and time. Choose another time BR-04\"); 37 days ahead rejected (\"Appointments can be booked up to 30 days ahead. Choose another time BR-09\")."
+    },
+    {
+      "id": "TC-13",
+      "status": "Pass",
+      "actual": "Dialog \"Cancel this appointment?\"; toast \"Appointment APT-1001 cancelled. The slot is now free for other patients.\"; APT-1001 now under Past & cancelled as Cancelled."
+    },
+    {
+      "id": "TC-14",
+      "status": "Pass",
+      "actual": "10:00am became available after cancellation and was booked by the new patient (APT-1013)."
+    },
+    {
+      "id": "TC-15",
+      "status": "Pass",
+      "actual": "Cancel and Reschedule disabled; message \"Appointments can't be changed online less than 2 hours before the start. Call the hospital on 020 7946 0000.\"."
+    },
+    {
+      "id": "TC-16",
+      "status": "Pass",
+      "actual": "Empty reason rejected (\"Enter a reason for cancelling.\"); status changed to Cancelled; Alice sees APT-1001 as Cancelled."
+    },
+    {
+      "id": "TC-17",
+      "status": "Pass",
+      "actual": "Moved to Fri 16 Oct 11:00am, reference still APT-1001; 10:00am slot released (selectable)."
+    },
+    {
+      "id": "TC-18",
+      "status": "Pass",
+      "actual": "Booked 10:30am and current 10:00am both disabled (current is labelled); Confirm new time disabled."
+    },
+    {
+      "id": "TC-19",
+      "status": "Pass",
+      "actual": "Blocked: \"Appointments can't be changed online less than 2 hours before the start. Call the hospital on 020 7946 0000. BR-10\"; slot picker not shown."
+    },
+    {
+      "id": "TC-20",
+      "status": "Pass",
+      "actual": "APT-1007 now \"APT-1007 Mon, 19 Oct, 11:30am Ben Carter Dr Tomasz Nowak Booked RescheduleCancel\"."
+    },
+    {
+      "id": "TC-21",
+      "status": "Pass",
+      "actual": "alice@demo.com → /patient (\"My appointments\"); priya.raman@hospital.demo → /doctor (\"Dr Priya Raman\"); admin@hospital.demo → /admin (\"Hospital administration\")"
+    },
+    {
+      "id": "TC-22",
+      "status": "Pass",
+      "actual": "Empty: \"Enter your email and password.\"; wrong password and unknown email both: \"Invalid email or password.\"; stayed on /login."
+    },
+    {
+      "id": "TC-23",
+      "status": "Pass",
+      "actual": "All redirected to login: /login?redirect=/patient | /login?redirect=/admin | /login?redirect=/book/d7?date=2026-10-19&time=10:00"
+    },
+    {
+      "id": "TC-24",
+      "status": "Pass",
+      "actual": "Patient → /patient with \"You do not have access to that page.\"; patient /doctor → /patient; doctor /admin → /doctor; APT-1007 not visible to Dr Raman."
+    },
+    {
+      "id": "TC-25",
+      "status": "Pass",
+      "actual": "Login refused: \"This account is deactivated. Contact the hospital.\"."
+    },
+    {
+      "id": "TC-26",
+      "status": "Pass",
+      "actual": "APT-1002 status Cancelled; activity log: \"Cancelled APT-1002 — slot released Hospital Admin · 08:00\"."
+    },
+    {
+      "id": "TC-27",
+      "status": "Pass",
+      "actual": "Slot state \"Open\"; 12:30pm visible and selectable on the patient profile."
+    },
+    {
+      "id": "TC-28",
+      "status": "Pass",
+      "actual": "Slot state \"Not available\"; 9:00am no longer offered to patients."
+    },
+    {
+      "id": "TC-29",
+      "status": "Pass",
+      "actual": "Blocked: \"This slot is booked (APT-1001). Cancel the appointment first. BR-12\"; slot still Booked."
+    },
+    {
+      "id": "TC-30",
+      "status": "Pass",
+      "actual": "Past date: \"Availability cannot be added for a past date. BR-09\", publish disabled, click rejected. 31 days ahead: \"Availability can be published up to 30 days ahead. BR-09\", publish disabled."
+    },
+    {
+      "id": "TC-31",
+      "status": "Pass",
+      "actual": "Dashboard flagged \"1 past appointments still to close\"; APT-1006 → Completed; future APT-1001 \"Mark completed\" disabled."
+    },
+    {
+      "id": "TC-32",
+      "status": "Pass",
+      "actual": "16 slots published; patient view shows \"16 free\" on Mon 2 Nov."
+    },
+    {
+      "id": "TC-33",
+      "status": "Pass",
+      "actual": "Warning: \"Dr Grace Chen has 1 upcoming appointment(s). Deactivating hides them f…\"; status Inactive; not in search; profile \"Doctor not available\"."
+    },
+    {
+      "id": "TC-34",
+      "status": "Pass",
+      "actual": "5 field errors on empty form; doctor added; ENT search shows Dr Test Doctor with \"No free slots in the next 30 days\"."
+    },
+    {
+      "id": "TC-35",
+      "status": "Pass",
+      "actual": "Filter returned only APT-1004; report total 12; CSV \"appointments_2026-09-30_to_2026-10-28.csv\" with 12 rows; invalid range: \"The start date must be on or before the end date.\"."
+    },
+    {
+      "id": "TC-36",
+      "status": "Pass",
+      "actual": "5 field errors on empty form; mismatch \"Passwords do not match.\"; duplicate \"An account with this email already exists.\"; stayed on Register."
+    },
+    {
+      "id": "TC-37",
+      "status": "Pass",
+      "actual": "Blocked: \"You can hold up to 3 upcoming appointments. Cancel one to book another. BR-16\"."
+    },
+    {
+      "id": "TC-38",
+      "status": "Pass",
+      "actual": "Menu collapsed and opened correctly; no horizontal overflow; booking confirmed on mobile."
+    }
+  ]
+}

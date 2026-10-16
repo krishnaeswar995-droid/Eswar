@@ -2,7 +2,7 @@ flowchart TD
     A([Patient opens site]) --> B[Search doctors<br/>filter by specialization / name]
     B --> C{Doctors found?}
     C -- No --> B1[No doctors found<br/>Clear filters] --> B
-    C -- Yes --> D[View doctor profile<br/>fee, experience, 14-day slots]
+    C -- Yes --> D[View doctor profile<br/>fee, experience, 30-day slots]
     D --> E[Select date and open slot]
     E --> F{Logged in as patient?}
     F -- No --> G{Has account?}

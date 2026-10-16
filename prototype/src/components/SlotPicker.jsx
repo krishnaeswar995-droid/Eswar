@@ -1,10 +1,10 @@
 // Date strip + time grid. Shows open slots as selectable; booked and past slots disabled (FR-14).
 import { useMemo, useState } from 'react';
 import { useStore } from '../lib/store.jsx';
-import { addDays, formatTime, parseDateTime, todayISO } from '../lib/dates.js';
+import { BOOKING_HORIZON_DAYS, addDays, formatTime, parseDateTime, todayISO } from '../lib/dates.js';
 import { slotStatus } from '../lib/rules.js';
 
-const DAYS_SHOWN = 14;
+const DAYS_SHOWN = BOOKING_HORIZON_DAYS + 1; // today + 30 days (BR-09)
 
 export default function SlotPicker({ doctorId, value, onChange, current }) {
   const { db } = useStore();
