@@ -5,7 +5,7 @@
 |---|---|
 | Document version | 1.0 |
 | Date | 16 October 2026 |
-| Author | Archana Jangamgunta (Business Analyst) |
+| Author | Eswara Krishna Bodi (Business Analyst) |
 | Status | Draft for review |
 | Related artefacts | User flows (`docs/user-flows`), Wireframes (`docs/wireframes`), Prototype (`prototype/`), Test cases (`docs/testing`) |
 

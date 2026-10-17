@@ -17,7 +17,7 @@ const THEME = {
 
 const pres = new pptxgen();
 pres.layout = 'LAYOUT_16x9'; // 10 x 5.625
-pres.author = 'Archana Jangamgunta';
+pres.author = 'Eswara Krishna Bodi';
 pres.title = 'Hospital Appointment Booking System';
 pres.theme = { headFontFace: THEME.headFontFace, bodyFontFace: THEME.bodyFontFace };
 const C = pres.SchemeColor;
@@ -51,7 +51,7 @@ const txt = (slide, text, o) => slide.addText(text, { isTextBox: true, margin: 0
 pres.addSection({ title: 'Introduction' });
 let s = pres.addSlide({ masterName: 'Title Dark', sectionTitle: 'Introduction' });
 s.addText('Hospital Appointment Booking System', { isTextBox: true, x: 0.6, y: 1.0, w: 8.6, h: 1.45, fontSize: 36, bold: true, color: C.background1, valign: 'bottom', margin: 0 });
-s.addText('Business analysis, design and clickable prototype\nArchana Jangamgunta · October 2026', { isTextBox: true, x: 0.6, y: 2.8, w: 8.4, h: 1.0, fontSize: 16, color: C.accent5, valign: 'top', margin: 0 });
+s.addText('Business analysis, design and clickable prototype\nEswara Krishna Bodi · October 2026', { isTextBox: true, x: 0.6, y: 2.8, w: 8.4, h: 1.0, fontSize: 16, color: C.accent5, valign: 'top', margin: 0 });
 s.addNotes('Walkthrough of the assessment: problem, business logic, design decisions, assumptions, testing and how Claude and GitHub were used.');
 
 // 2. Problem & objectives

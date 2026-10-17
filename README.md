@@ -2,7 +2,7 @@
 
 Business analysis assessment: requirements, user flows, wireframes, a clickable React prototype and executed test cases for a web app that lets patients find doctors, book, cancel and reschedule appointments, while doctors manage their availability and administrators oversee bookings.
 
-**Author:** Archana Jangamgunta · **Built with:** Claude (analysis, design, code, tests, documentation) and GitHub (version control, hosting)
+**Author:** Eswara Krishna Bodi · **Built with:** Claude (analysis, design, code, tests, documentation) and GitHub (version control, hosting)
 
 ![Patient dashboard](docs/screenshots/07-patient-dashboard.png)
 
